@@ -34,8 +34,8 @@ public class UserService {
         return (List<UserModel>) repository.findByName(name);
     }
 
-    public List<UserModel> findByNameAndAge(String name, short age) {
-        return (List<UserModel>) repository.findByNameAndAge(name, age);
+    public UserModel findByEmail(String email) {
+        return (UserModel) repository.findByEmail(email);
     }
 
     public void delete(String id) {

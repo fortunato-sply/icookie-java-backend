@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fortunato.java_api.DTO.FoodsDTO;
+import com.fortunato.java_api.dto.FoodsDTO;
 import com.fortunato.java_api.model.FoodModel;
 import com.fortunato.java_api.services.FoodService;
 

@@ -1,4 +1,4 @@
-package com.fortunato.java_api.DTO;
+package com.fortunato.java_api.dto;
 
 import java.util.List;
 

@@ -31,12 +31,7 @@ public class UserController {
         return service.findByName(name);
     }
 
-    @GetMapping("/{name}/{age}")
-    public List<UserModel> getByNameAndAge(@PathVariable String name, @PathVariable short age) {
-        return service.findByNameAndAge(name, age);
-    }
-
-    @PostMapping("")
+    @PostMapping("/register")
     public void newUser(@RequestBody UserModel newUser) {
         service.save(newUser);
     }
