@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fortunato.java_api.dto.AuthDTO;
+import com.fortunato.java_api.dto.UserDTO;
 import com.fortunato.java_api.model.UserModel;
 import com.fortunato.java_api.services.AuthService;
 import com.fortunato.java_api.services.UserService;
@@ -22,15 +24,24 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public String login(@RequestBody UserModel user) {
+    public AuthDTO login(@RequestBody UserModel user) {
         var resp = this.userService.findByEmail(user.getEmail());
         if (resp != null) {
             if (resp.getPassword().equals(user.getPassword())) {
-                return authService.createToken(user);
+                AuthDTO auth = new AuthDTO();
+                String token = authService.createToken(user);
+                auth.setToken(token);
+
+                UserDTO userInfo = new UserDTO();
+                userInfo.setName(resp.getName());
+                userInfo.setEmail(resp.getEmail());
+                userInfo.setAdmin(resp.isAdmin());
+                auth.setUser(userInfo);
+
+                return auth;
             }
-            return "Senha incorreta";
         }
-        return "Usuário não encontrado";
+        return null;
     }
 
     @PostMapping("/validate")

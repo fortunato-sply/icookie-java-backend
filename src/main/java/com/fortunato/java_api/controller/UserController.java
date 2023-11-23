@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void newUser(@RequestBody UserModel newUser) {
-        service.save(newUser);
+    public UserModel newUser(@RequestBody UserModel newUser) {
+        return service.save(newUser);
     }
 
     @PutMapping("/{id}")
