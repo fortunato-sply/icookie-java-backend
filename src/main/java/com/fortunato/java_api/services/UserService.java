@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import com.fortunato.java_api.model.UserModel;
 import com.fortunato.java_api.repository.UserRepository;
@@ -13,13 +14,14 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public UserModel save(UserModel user) {
+    public UserModel create(UserModel user) {
+        String pass = DigestUtils.md5DigestAsHex(user.getPassword().getBytes()).toUpperCase();
+        user.setPassword(pass);
         return repository.save(user);
     }
 
-    public void save(String id, String name, String email, String password, boolean admin) {
-        UserModel user = new UserModel(id, name, email, password, admin);
-        repository.save(user);
+    public UserModel save(String id, String email, String name, String password, boolean isAdmin) {
+        return repository.save(new UserModel(id, email, name, password, isAdmin));
     }
 
     public UserModel findById(String id) {

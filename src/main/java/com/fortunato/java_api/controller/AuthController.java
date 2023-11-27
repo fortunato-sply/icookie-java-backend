@@ -1,6 +1,9 @@
 package com.fortunato.java_api.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,10 +27,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public AuthDTO login(@RequestBody UserModel user) {
+    public ResponseEntity login(@RequestBody UserModel user) {
         var resp = this.userService.findByEmail(user.getEmail());
         if (resp != null) {
-            if (resp.getPassword().equals(user.getPassword())) {
+            String pass = DigestUtils.md5DigestAsHex(user.getPassword().getBytes()).toUpperCase();
+
+            if (resp.getPassword().equals(pass)) {
                 AuthDTO auth = new AuthDTO();
                 String token = authService.createToken(user);
                 auth.setToken(token);
@@ -38,10 +43,11 @@ public class AuthController {
                 userInfo.setAdmin(resp.isAdmin());
                 auth.setUser(userInfo);
 
-                return auth;
+                return ResponseEntity.ok(auth);
             }
         }
-        return null;
+        System.out.println("User not found");
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/validate")

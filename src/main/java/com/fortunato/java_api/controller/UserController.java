@@ -3,6 +3,7 @@ package com.fortunato.java_api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +33,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserModel newUser(@RequestBody UserModel newUser) {
-        return service.save(newUser);
+    public ResponseEntity newUser(@RequestBody UserModel newUser) {
+        UserModel userExists = service.findByEmail(newUser.getEmail());
+        if(userExists != null)
+            return ResponseEntity.badRequest().build();
+        
+        UserModel user = service.create(newUser);
+        return ResponseEntity.ok(user);
+        
     }
 
     @PutMapping("/{id}")
