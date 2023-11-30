@@ -38,6 +38,7 @@ public class AuthController {
                 auth.setToken(token);
 
                 UserDTO userInfo = new UserDTO();
+                userInfo.setId(resp.getId());
                 userInfo.setName(resp.getName());
                 userInfo.setEmail(resp.getEmail());
                 userInfo.setAdmin(resp.isAdmin());

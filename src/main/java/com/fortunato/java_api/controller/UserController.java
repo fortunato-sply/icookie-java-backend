@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +45,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void updateUser(@PathVariable String id, @RequestBody UserModel newUser) {
-        service.save(id, newUser.getName(), newUser.getEmail(), newUser.getPassword(), newUser.isAdmin());
+    public UserModel updateUser(@PathVariable String id, @RequestBody UserModel newUser) {
+        String password = DigestUtils.md5DigestAsHex(newUser.getPassword().getBytes()).toUpperCase();
+        return service.save(id, newUser.getName(), newUser.getEmail(), password, newUser.isAdmin());
     }
 
     @DeleteMapping("/{id}")
